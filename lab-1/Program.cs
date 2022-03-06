@@ -48,8 +48,8 @@ namespace lab_1{
             return suma;
         }
 
-        static int? zadanie3(int[] arr, int k) {
-            int? wynik = null;
+        static int zadanie3(int[] arr, int k) {
+            int wynik = -1;
             int[] pomocnicza = new int[10000];
             foreach  (int number in arr) {
                 pomocnicza[number] = 1;
@@ -100,8 +100,8 @@ namespace lab_1{
         static int zadanie5(int[] arr) {
             int index = -1;
             int sum = 0;
-            foreach (int number in arr) {
-                sum += number;
+            for (int i = 0; i < arr.Length; i++) {
+                sum += arr[i];
             }
             for (int i = 0; i < arr.Length; i++) {
                 if (sum - arr[i] == arr[i]) {
