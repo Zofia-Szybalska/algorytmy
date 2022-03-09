@@ -9,11 +9,14 @@ namespace lab_2
             //var result = silnia(5);
             //Console.WriteLine("KONIEC " + result);
             int[] test1 = new int[] { 0,6,4,8,2,-1,5,7};
-            //Console.WriteLine(arraySum(test1,0,0));
-            int[] test2 = new int[] { 0, 6, 4, 8, 2, 6, 5, 7 };
-            Console.WriteLine(zadanie2(test2,6,0,0));
-            //FizzBuzz(18,1,1);
-            //Console.WriteLine(max(test2,0,test2.Length-1));
+            Console.WriteLine(arraySum(test1,0,0));
+            Console.WriteLine();
+            int[] test2 = new int[] { 0,11, 6, 4, 8,11, 2, 6, 5, 7, 11 };
+            Console.WriteLine(zadanie2(test2,11,0,0));
+            Console.WriteLine();
+            FizzBuzz(18,1,1);
+            Console.WriteLine();
+            Console.WriteLine(max(test2,0,test2.Length-1));
         }
         static long silnia(int n)
         {
@@ -88,7 +91,7 @@ namespace lab_2
         {
             if (n == 0)
             {
-                return S;
+                return (int)Math.Round((double)(S /2));
             }
             S = (int)Math.Round((0.5)*((zadanie4(S, n - 1) + (S / zadanie4(S, n - 1)))));
             return S;
