@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Channels;
 
-namespace lab_10_task
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
+namespace lab_10_task {
+    public class Program {
+        public static void Main(string[] args) {
             Node<File> filesRoot = new Node<File>() { Value = new File("C", 0), Children = new List<Node<File>>() };
 
             FileSystem files = new FileSystem() { Root = filesRoot };
-            files.Root.Children.Add(new Node<File>()
-            {
+            files.Root.Children.Add(new Node<File>() {
                 Value = new File("home", 0)
             });
-            Node<File> directoryA = new Node<File>()
-            {
+            Node<File> directoryA = new Node<File>() {
                 Value = new File("game", 0),
                 Children = new List<Node<File>>()
                 {
@@ -26,8 +20,7 @@ namespace lab_10_task
                     new Node<File>() {Value = new File("inputs.bin", 7829000)},
                 }
             };
-            Node<File> directoryB = new Node<File>()
-            {
+            Node<File> directoryB = new Node<File>() {
                 Value = new File("app", 0),
                 Children = new List<Node<File>>()
                 {
@@ -39,155 +32,128 @@ namespace lab_10_task
             };
             files.Root.Children.Add(directoryA);
             files.Root.Children.Add(directoryB);
-            try
-            {
+            try {
                 int count = 0;
-                files.PreorderTraversal(n =>
-                {
+                files.PreorderTraversal(n => {
                     count += 1;
                 });
-                if (count == 12)
-                {
+                if (count == 12) {
                     Console.WriteLine("Zadanie 1: 1");
                 }
-                else
-                {
+                else {
                     Console.WriteLine("Zadanie 1: 0");
                 }
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Console.WriteLine("Zadanie 1: 0");
             }
-            try
-            {
+            try {
                 int count = 0;
                 files.PostorderTraversal(n => count += 1);
-                if (count == 12)
-                {
+                if (count == 12) {
                     Console.WriteLine("Zadanie 2: 1");
                 }
-                else
-                {
+                else {
                     Console.WriteLine("Zadanie 2: 0");
                 }
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Console.WriteLine("Zadanie 2: 0");
             }
-            try
-            {
-                if (files.GetSize() == 18233536)
-                {
+            try {
+                if (files.GetSize() == 18233536) {
                     Console.WriteLine("Zadanie 3: 1");
                 }
-                else
-                {
+                else {
                     Console.WriteLine("Zadanie 3: 0");
                 }
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Console.WriteLine("Zadanie 3: 0");
             }
 
-            try
-            {
+            try {
                 var result = files.GetAbsolutePaths();
-                if (result.Count == 9 && result.Contains("C:home") && result.Contains("C:game:graphics.bin") && result.Contains("C:app:inputs.bin"))
-                {
+                if (result.Count == 9 && result.Contains("C:home") && result.Contains("C:game:graphics.bin") && result.Contains("C:app:inputs.bin")) {
                     Console.WriteLine("Zadanie 4: 1");
                 }
-                else
-                {
+                else {
                     Console.WriteLine("Zadanie 4: 0");
                 }
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Console.WriteLine("Zadanie 4: 0");
             }
         }
 
     }
 
-    public class Node<T>
-    {
+    public class Node<T> {
         public T Value { get; init; }
         public List<Node<T>> Children { get; init; }
     }
 
-    public class Tree<T>
-    {
+    public class Tree<T> {
         public Node<T> Root { get; set; }
 
         //Zadanie 1
         //Zaimplementuj metodę przechodzenia po drzewie metodą pre-order
-        public void PreorderTraversal(Action<Node<T>> action)
-        {
+        public void PreorderTraversal(Action<Node<T>> action) {
             PreorderTraversalRecursive(Root, action);
         }
-        private void PreorderTraversalRecursive(Node<T> node, Action<Node<T>> action)
-        {
+        private void PreorderTraversalRecursive(Node<T> node, Action<Node<T>> action) {
             if (node == null)
                 return;
             action.Invoke(node);
-            foreach (var child in node.Children)
-            {
-                PreorderTraversalRecursive(child, action);
+            if (node.Children != null) {
+                foreach (var child in node.Children) {
+                    PreorderTraversalRecursive(child, action);
+                }
             }
         }
 
         //Zadanie 2
         //Zaimplementuj metodę prechodzenia po drzewie metodą post-order
-        public void PostorderTraversal(Action<Node<T>> action)
-        {
+        public void PostorderTraversal(Action<Node<T>> action) {
             PostorderTraversalRecursive(Root, action);
         }
-        private void PostorderTraversalRecursive(Node<T> node, Action<Node<T>> action)
-        {
+        private void PostorderTraversalRecursive(Node<T> node, Action<Node<T>> action) {
             if (node == null)
                 return;
-            foreach (var child in node.Children)
-            {
-                PreorderTraversalRecursive(child, action);
+            if (node.Children != null) {
+                foreach (var child in node.Children) {
+                    PreorderTraversalRecursive(child, action);
+                }
             }
             action.Invoke(node);
         }
 
-        public List<T[]> GetPaths()
-        {
+        public List<T[]> GetPaths() {
             Stack<T> stack = new Stack<T>();
             List<T[]> paths = new List<T[]>();
             GetPathsInternal(Root, stack, paths);
             return paths;
         }
 
-        private void GetPathsInternal(Node<T> node, Stack<T> stack, List<T[]> paths)
-        {
-            if (node == null)
-            {
+        private void GetPathsInternal(Node<T> node, Stack<T> stack, List<T[]> paths) {
+            if (node == null) {
                 return;
             }
 
             stack.Push(node.Value);
-            if (IsLeaf(node))
-            {
+            if (IsLeaf(node)) {
                 paths.Add(stack.ToArray());
                 stack.Pop();
                 return;
             }
 
-            foreach (var n in node.Children)
-            {
+            foreach (var n in node.Children) {
                 GetPathsInternal(n, stack, paths);
             }
 
             stack.Pop();
 
-            bool IsLeaf(Node<T> node)
-            {
+            bool IsLeaf(Node<T> node) {
                 return node.Children == null || node.Children.Count == 0;
             }
         }
@@ -195,8 +161,7 @@ namespace lab_10_task
 
     public record File(string Name, int Size);
 
-    public class FileSystem : Tree<File>
-    {
+    public class FileSystem : Tree<File> {
         //drzewo zawiera rekordy, z nazwą pliku i jego rozmiarem,
         //jeśli rozmiar jest równy 0 i posiada dzieci to rekord jest katalogiem
         //jeśli rozmiar jest większy od 0 i nie posiada dzieci to element jest plikiem
@@ -204,9 +169,10 @@ namespace lab_10_task
         //Zadanie 3
         //Zaimplementuj metodę, która obliczy rozmiar wszystkich plików w drzewie plików.
         //Wykorzystaj jedną z metod przeglądania drzewa z klasy Tree
-        public int GetSize()
-        {
-            throw new NotImplementedException();
+        public int GetSize() {
+            int sum = 0;
+            PreorderTraversal(f => sum += f.Value.Size);
+            return sum;
         }
 
 
@@ -215,9 +181,23 @@ namespace lab_10_task
         // do oddzielania kolejnych elementów drzewa zastosuj znak ':' np. :katalogX:katalogY:plikZ
         // Wykorzystaj metodę GetPath, która zwraca ściezki w postaci tablicy rekordów File.
         // Pamiętaj, że GetPath zwraca elementy ściezki w odwróconej kolejności!
-        public List<string> GetAbsolutePaths()
-        {
-            throw new NotImplementedException();
+        public List<string> GetAbsolutePaths() {
+            List<string> result = new List<string>();
+            foreach (var path in GetPaths()) {
+                var stack = new Stack<string>();
+                foreach (var item in path) {
+                    stack.Push(item.Name);
+                }
+                string pathString = "";
+                for (int i = stack.Count; i > 0; i--) {
+                    pathString += stack.Pop().ToString();
+                    if (stack.Count > 0) {
+                        pathString += ":";
+                    }
+                }
+                result.Add(pathString);
+            }
+            return result;
         }
     }
 }
