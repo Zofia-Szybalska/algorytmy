@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace lab_11
 {
@@ -120,9 +121,81 @@ namespace lab_11
                 return false;
             }
         }
+        class Edge : IComparable<Edge>
+        {
+            public int Node { get; set; }
+            public double Weight { get; set; }
+
+            public int CompareTo(Edge other)
+            {
+                return Weight.CompareTo(other.Weight);
+            }
+        }
+        class Graph
+        {
+            public Dictionary<int, List<Edge>> Edges = new Dictionary<int, List<Edge>>();
+            public void AddDirectedEdge(int source, int destination, double weight)
+            {
+                if (!Edges.ContainsKey(source))
+                    Edges.Add(source, new List<Edge>());
+                if (!Edges.ContainsKey(destination))
+                    Edges.Add(destination, new List<Edge>());
+                Edges[source].Add(new Edge { Node = destination, Weight = weight });
+            }
+            public void AddUnDirectedEdge(int source, int destination, double weight)
+            {
+                AddDirectedEdge(source, destination, weight);
+                AddDirectedEdge(destination, source, weight);
+            }
+            public void BFTraversal(int start, Action<int> action)
+            {
+                Queue<int> queue = new Queue<int>();
+                ISet<int> visited = new HashSet<int>();
+                queue.Enqueue(start);
+                while(queue.Count > 0)
+                {
+                    var node = queue.Dequeue();
+                    if (visited.Contains(node))
+                        continue;
+
+                    action.Invoke(node);
+                    visited.Add(node);
+                    foreach (var child in Edges[node])
+                        queue.Enqueue(child.Node);
+                }
+            }
+            //algorytm Dijkstry
+            public double[] GetDistances(int start)
+            {
+                var distances = new double[Edges.Count];
+                var previous = new int[Edges.Count];
+                distances[start] = 0;
+                previous[start] = start;
+                var queue = new Queue<Edge>();
+                foreach (var child in Edges[start])
+                {
+                    queue.Enqueue(child);
+                }
+                while (queue.Count > 0)
+                {
+                    var node = queue.Dequeue();
+                    /* co z previous?*/
+                    if (node.Weight + distances[previous[node.Node]] < /*tu coś jeszcze*/distances[node.Node])
+                    {
+                        distances[node.Node] += node.Weight /*+ no i tu to coś jeszcze*/;
+                    }
+                    foreach (var child in Edges[node.Node])
+                    {
+                        /*sprawdzić czy już odwiedzone?*/
+                        queue.Enqueue(child);
+                    }
+                }
+                return distances;
+            }
+        }
         static void Main(string[] args)
         {
-            var graph = new AdGraph(5);
+            /*var graph = new AdGraph(5);
             graph.AddEdge(1, 4);
             graph.AddEdge(3, 4);
             graph.AddEdge(2, 4);
@@ -132,7 +205,16 @@ namespace lab_11
             graph2.AddDirectedEdge(1, 2);
             graph2.AddDirectedEdge(2, 1);
             graph2.AddDirectedEdge(1, 0);
-            Console.WriteLine(graph2.ToString());
+            Console.WriteLine(graph2.ToString());*/
+                        Graph graph = new Graph();
+            graph.AddDirectedEdge(1,2,1);
+            graph.AddDirectedEdge(1,3,2);
+            graph.AddDirectedEdge(1,4,3);
+            graph.AddDirectedEdge(2,5,4);
+            graph.AddDirectedEdge(5,6,5);
+            graph.AddDirectedEdge(3,6,6);
+            graph.AddDirectedEdge(4,6,7);
+            graph.BFTraversal(2, n => Console.Write(n + " "));
         }
     }
 }
