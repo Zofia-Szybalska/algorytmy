@@ -20,7 +20,12 @@ namespace lab_12
                 Console.WriteLine("Zadanie3 poprawne");
             else
                 Console.WriteLine("Zadanie3 niepoprawne");
+            if (Zadanie4("10000000000", "1111111111").Equals("11111111111"))
+                Console.WriteLine("Zadanie4 poprawne");
+            else
+                Console.WriteLine("Zadanie4 niepoprawne");
         }
+
         //czy łańcuch wejściowy jest palindromem
         //input zawsze ma conajmiej jeden znak
         public static bool Zadanie1(string input) {
@@ -30,6 +35,7 @@ namespace lab_12
             }
             return true;
         }
+
         //Znajdź i zwróć pierwszy najdłuższy fragment złożony z jednakowych znaków
         //input ma conajmiej jeden znak
         public static string Zadanie2(string input)
@@ -53,6 +59,7 @@ namespace lab_12
             }
             return max.Length == 0 ? input[0] + "" : max;
         }
+
         //czy str1 jest anagramem str2
         public static bool Zadanie3(string str1, string str2) {
             if (str1.Length != str2.Length)
@@ -66,6 +73,24 @@ namespace lab_12
                     return false;
             }
             return true;
+        }
+
+        //Dodawanie dwóch liczb całkowitych, dodatnich zapianych w łańcuchu
+        //Dodawanie w słupku
+        public static string Zadanie4(string s1, string s2)
+        {
+            return "";
+        }
+
+        //Fromatowanie do łańcuchów o długości nie większej od n
+        //Znak nowego wiersza tak, żeby wiersze nie były dłuższe od n
+        // dla "abbcd edfg ijkl" n =5
+        // abcd \nedfg \nijkl
+        //bez łamania słów (dzielenia między wiersze) (jeśli chcesz ambitnie), wyświetlane w nowym wierszy, założenie n wieksze niż długość najdłuższego słowa
+        public static string Zadanie5(string input, int n)
+        {
+
+            return "";
         }
     }
 }
