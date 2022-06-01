@@ -137,6 +137,10 @@ class Program
      */
     public static string Zadanie1(string input)
     {
+        if (input.Length == 0)
+        {
+            return "";
+        }
         int max = 0;
         string curr = "";
         string longest = "";
@@ -155,6 +159,11 @@ class Program
                 }
                 curr = "";
             }
+        }
+        if (curr.Length > max)
+        {
+            max = curr.Length;
+            longest = curr;
         }
         var arr = longest.ToCharArray();
         Array.Sort(arr);
