@@ -184,14 +184,14 @@ class Program
      */
     public static bool Zadanie2(string input)
     {
-        List<char> uniqSings = new List<char>();
+        string uniqe = "";
         foreach (var Sing in input)
         {
-            if (uniqSings.Contains(Sing))
+            if (uniqe.Contains(Sing))
             {
                 return false;
             }
-            uniqSings.Add(Sing);
+            uniqe += Sing;
         }
         return true;
     }
@@ -338,12 +338,12 @@ class Program
 
         public bool IsPath(int start, int end)
         {
-            Stack<int> stack = new Stack<int>(); 
+            Stack<int> stack = new Stack<int>();
             bool[] odwiedzone = new bool[_matrix.GetLength(0)];
             odwiedzone[start] = true;
             for (int i = 0; i < _matrix.GetLength(1); i++)
             {
-                if (_matrix[start, i] == 1 && odwiedzone[i] ==  false)
+                if (_matrix[start, i] == 1 && odwiedzone[i] == false)
                 {
                     if (i == end)
                     {
@@ -354,7 +354,8 @@ class Program
             }
             while (stack.Count > 0)
             {
-                if (IsPath(stack.Pop(), end)) {
+                if (IsPath(stack.Pop(), end))
+                {
                     return true;
                 }
             }
